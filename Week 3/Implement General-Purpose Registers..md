@@ -1,5 +1,5 @@
 
-# To implement general-purpose registers
+# To Implement General-Purpose Registers
  In the context of a basic CPU simulation, we need to represent a set of registers that can store values and perform operations. General-purpose registers (GPRs) are used by a CPU to hold intermediate results during computations.
 
  Let's break down the task of implementing general-purpose registers in a C++ CPU simulation.

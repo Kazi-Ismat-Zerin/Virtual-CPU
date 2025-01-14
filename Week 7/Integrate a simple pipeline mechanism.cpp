@@ -1,39 +1,45 @@
 #include <iostream>
-using namespace std;
+#include <vector>
+#include <functional>
 
-class CPU {
+// Define a type for pipeline stages
+using Stage = std::function<int(int)>;
+
+// Simple Pipeline class
+class Pipeline {
 private:
-    int pc;
+    std::vector<Stage> stages;
 
 public:
-    CPU() : pc(0) {}
-
-
-    void run() {
-        while (pc < 3) {
-            cout << "Fetching instruction " << pc << endl;
-            execute(pc);
-            pc++;
-        }
+    // Add a stage to the pipeline
+    void addStage(Stage stage) {
+        stages.push_back(stage);
     }
 
-
-    void execute(int instruction) {
-        if (instruction == 0) {
-            cout << "Executing Subroutine!" << endl;
-        } else if (instruction == 1) {
-            cout << "Executing Interrupt!" << endl;
-        } else {
-            cout << "Executing Instruction " << instruction << endl;
+    // Execute the pipeline
+    int execute(int input) {
+        int output = input;
+        for (const auto& stage : stages) {
+            output = stage(output);
         }
+        return output;
     }
 };
 
 int main() {
-    CPU cpu;
+    Pipeline pipeline;
 
+    // Add stages to the pipeline
+    pipeline.addStage([](int x) { return x + 1; });   // Stage 1: Increment
+    pipeline.addStage([](int x) { return x * 2; });   // Stage 2: Double
+    pipeline.addStage([](int x) { return x - 3; });   // Stage 3: Subtract 3
 
-    cpu.run();
+    // Execute the pipeline
+    int input = 5;
+    int result = pipeline.execute(input);
+
+    std::cout << "Input: " << input << "\n";
+    std::cout << "Result: " << result << "\n";
 
     return 0;
 }
